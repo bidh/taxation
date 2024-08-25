@@ -2,7 +2,7 @@
 {
     public class DailyTaxRequest
     {
-        public string Municipality { get; set; }
+        public int MunicipalityId { get; set; }
         public decimal Tax { get; set; }
         public DateTimeOffset Date { get; set; }
     }

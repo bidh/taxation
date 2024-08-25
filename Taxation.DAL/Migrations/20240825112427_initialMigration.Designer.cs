@@ -12,7 +12,7 @@ using Taxation.DAL.Context;
 namespace Taxation.DAL.Migrations
 {
     [DbContext(typeof(TaxDbContext))]
-    [Migration("20240824193530_initialMigration")]
+    [Migration("20240825112427_initialMigration")]
     partial class initialMigration
     {
         /// <inheritdoc />

@@ -52,7 +52,6 @@ namespace Taxation.API
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();

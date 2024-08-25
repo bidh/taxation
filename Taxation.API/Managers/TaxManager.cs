@@ -1,4 +1,5 @@
 ﻿using Taxation.API.Models;
+using Taxation.DAL.Models;
 using Taxation.DAL.Services;
 
 namespace Taxation.API.Managers
@@ -13,7 +14,12 @@ namespace Taxation.API.Managers
 
         public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax)
         {
-            throw new NotImplementedException();
+            return _taxService.CreateDailyTax(new DailyTax
+            {
+                MunicipalityId = dailyTax.MunicipalityId,
+                Tax = dailyTax.Tax,
+                Date = dailyTax.Date
+            });
         }
 
         public Task<bool> CreateMonthlyTax(MonthlyTaxRequest monthlyTax)
