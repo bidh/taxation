@@ -10,6 +10,7 @@ namespace Taxation.API
         {
             services.AddDbContext<TaxDbContext>();
             services.AddScoped<ITaxManager, TaxManager>();
+            services.AddMemoryCache();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Taxation.API.Models;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Taxation.API.Models;
 using Taxation.DAL.Helpers;
 using Taxation.DAL.Models;
 using Taxation.DAL.Services;
@@ -8,9 +9,11 @@ namespace Taxation.API.Managers
     public class TaxManager : ITaxManager
     {
         private readonly ITaxService _taxService;
-        public TaxManager(ITaxService taxService)
+        private readonly IMemoryCache _memoryCache;
+        public TaxManager(ITaxService taxService, IMemoryCache memoryCache)
         {
             _taxService = taxService;
+            _memoryCache = memoryCache;
         }
 
         public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax, CancellationToken cancellationToken)
@@ -55,45 +58,51 @@ namespace Taxation.API.Managers
 
         public async Task<float?> GetTax(string name, DateTimeOffset date, CancellationToken cancellationToken)
         {
-            var municipality = await _taxService.GetMunicipalityAsync(name, cancellationToken);
-            
-            if (municipality == null)
+            string cacheKey = $"{name}_{date}"; 
+
+            return await _memoryCache.GetOrCreateAsync(cacheKey, async entry =>
             {
-                return null;
-            }
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+                var municipality = await _taxService.GetMunicipalityAsync(name, cancellationToken);
 
-            float? tax = null;
-
-            var dailyTax = await _taxService.GetDailyTaxAsync(municipality, date, cancellationToken);
-
-            if(dailyTax != null)
-            {
-                tax = dailyTax.Tax;
-            }
-            else
-            {
-                var monthlyTax = await _taxService.GetMonthlyTaxAsync(municipality, date, cancellationToken);
-
-                if (monthlyTax != null)
+                if (municipality == null)
                 {
-                    tax = monthlyTax.Tax;
+                    return null;
+                }
+
+                float? tax = null;
+
+                var dailyTax = await _taxService.GetDailyTaxAsync(municipality, date, cancellationToken);
+
+                if (dailyTax != null)
+                {
+                    tax = dailyTax.Tax;
                 }
                 else
                 {
-                    var yearlyTax = await _taxService.GetYearlytaxAsync(municipality, date, cancellationToken);
+                    var monthlyTax = await _taxService.GetMonthlyTaxAsync(municipality, date, cancellationToken);
 
-                    if (yearlyTax != null)
+                    if (monthlyTax != null)
                     {
-                        tax = yearlyTax.Tax;
+                        tax = monthlyTax.Tax;
+                    }
+                    else
+                    {
+                        var yearlyTax = await _taxService.GetYearlytaxAsync(municipality, date, cancellationToken);
+
+                        if (yearlyTax != null)
+                        {
+                            tax = yearlyTax.Tax;
+                        }
                     }
                 }
-            }
 
-            if(tax == null)
-            {
-                return null;
-            }   
-            return tax;
+                if (tax == null)
+                {
+                    return null;
+                }
+                return tax;
+            });
         }
     }
 }
