@@ -7,7 +7,7 @@ namespace Taxation.DAL.Services
     public class TaxService(TaxDbContext db) : ITaxService
     {
         private readonly TaxDbContext _db = db;
-        public async Task<bool> CreateDailyTax(DailyTax dailyTax, CancellationToken cancellationToken)
+        public async Task<bool> CreateDailyTaxAsync(DailyTax dailyTax, CancellationToken cancellationToken)
         {
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -24,7 +24,7 @@ namespace Taxation.DAL.Services
             }
         }
 
-        public async Task<bool> CreateMonthlyTax(MonthlyTax monthlyTax, CancellationToken cancellationToken)
+        public async Task<bool> CreateMonthlyTaxAsync(MonthlyTax monthlyTax, CancellationToken cancellationToken)
         {
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -41,7 +41,7 @@ namespace Taxation.DAL.Services
             }
         }
 
-        public async Task<bool> CreateMunicipality(Municipality municipality, CancellationToken cancellationToken)
+        public async Task<bool> CreateMunicipalityAsync(Municipality municipality, CancellationToken cancellationToken)
         {
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -58,7 +58,7 @@ namespace Taxation.DAL.Services
             }
         }
 
-        public async Task<bool> CreateYearlyTax(Yearlytax yearlyTax, CancellationToken cancellationToken)
+        public async Task<bool> CreateYearlyTaxAsync(Yearlytax yearlyTax, CancellationToken cancellationToken)
         {
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -92,6 +92,72 @@ namespace Taxation.DAL.Services
         public async Task<MonthlyTax?> GetMonthlyTaxAsync(Municipality municipality, DateTimeOffset date, CancellationToken cancellationToken)
         {
             return await _db.MonthlyTaxes.FirstOrDefaultAsync(x => x.MunicipalityId == municipality.Id && x.StartDate <= date && x.EndDate >= date, cancellationToken: cancellationToken);
+        }
+
+        public async Task<bool?> UpdateDailyTaxAsync(DailyTax dailyTax, CancellationToken cancellationToken)
+        {
+            using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                _db.DailyTaxes.Update(dailyTax);
+                await _db.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                return true;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return false;
+            }
+        }
+
+        public async Task<bool?> UpdateMonthlyTaxAsync(MonthlyTax monthlyTax, CancellationToken cancellationToken)
+        {
+            using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                _db.MonthlyTaxes.Update(monthlyTax);
+                await _db.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                return true;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return false;
+            }
+        }
+
+        public async Task<bool?> UpdateYearlyTaxAsync(Yearlytax yearlyTax, CancellationToken cancellationToken)
+        {            
+            using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                _db.YearlyTaxes.Update(yearlyTax);
+                await _db.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                return true;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return false;
+            }
+        }
+
+        public async Task<DailyTax?> GetDailyTaxByIdAsync(int Id, CancellationToken cancellationToken)
+        {
+            return await _db.DailyTaxes.FirstOrDefaultAsync(x => x.Id == Id, cancellationToken: cancellationToken);
+        }
+
+        public async Task<Yearlytax?> GetYearlytaxByIdAsync(int Id, CancellationToken cancellationToken)
+        {
+            return await _db.YearlyTaxes.FirstOrDefaultAsync(x => x.Id == Id, cancellationToken: cancellationToken);
+        }
+
+        public async Task<MonthlyTax?> GetMonthlyTaxByIdAsync(int Id, CancellationToken cancellationToken)
+        {
+            return await _db.MonthlyTaxes.FirstOrDefaultAsync(x => x.Id == Id, cancellationToken: cancellationToken);
         }
     }
 }

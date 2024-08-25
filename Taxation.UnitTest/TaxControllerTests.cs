@@ -81,7 +81,7 @@ namespace Taxation.UnitTest
             string dateString = "August 8, 2024";
             DateTimeOffset date = DateTimeHelper.ConvertToDateTimeOffset(dateString);
             float expectedTax = 10.0f;
-            _taxManagerMock.Setup(x => x.GetTax(municipality, date, cancellationToken)).ReturnsAsync(expectedTax);
+            _taxManagerMock.Setup(x => x.GetTaxAsync(municipality, date, cancellationToken)).ReturnsAsync(expectedTax);
 
             // Act
             var result = await _taxController.Get(municipality, dateString, cancellationToken);
@@ -99,7 +99,7 @@ namespace Taxation.UnitTest
             string municipality = "Copenhagen";
             string dateString = "August 8, 2024";
             DateTimeOffset date = DateTimeHelper.ConvertToDateTimeOffset(dateString);
-            _taxManagerMock.Setup(x => x.GetTax(municipality, date, cancellationToken)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.GetTaxAsync(municipality, date, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
             var result = await _taxController.Get(municipality, dateString, cancellationToken);
@@ -115,7 +115,7 @@ namespace Taxation.UnitTest
         {
             // Arrange            
             var yearlyTax = new YearlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateYearlyTax(yearlyTax, cancellationToken)).ReturnsAsync(true);
+            _taxManagerMock.Setup(x => x.CreateYearlyTaxAsync(yearlyTax, cancellationToken)).ReturnsAsync(true);
 
             // Act
             var result = await _taxController.CreateYearlyTax(yearlyTax, cancellationToken);
@@ -131,7 +131,7 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var yearlyTax = new YearlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateYearlyTax(yearlyTax, new CancellationToken())).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.CreateYearlyTaxAsync(yearlyTax, new CancellationToken())).ThrowsAsync(new Exception());
 
             // Act
             var result = await _taxController.CreateYearlyTax(yearlyTax, cancellationToken);
@@ -147,7 +147,7 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var monthlyTax = new MonthlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateMonthlyTax(monthlyTax, cancellationToken)).ReturnsAsync(true);
+            _taxManagerMock.Setup(x => x.CreateMonthlyTaxAsync(monthlyTax, cancellationToken)).ReturnsAsync(true);
 
             // Act
             var result = await _taxController.CreateMonthlyTax(monthlyTax, cancellationToken);
@@ -163,7 +163,7 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var monthlyTax = new MonthlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateMonthlyTax(monthlyTax, cancellationToken)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.CreateMonthlyTaxAsync(monthlyTax, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
             var result = await _taxController.CreateMonthlyTax(monthlyTax, cancellationToken);
@@ -179,7 +179,7 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var dailyTax = new DailyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateDailyTax(dailyTax, cancellationToken)).ReturnsAsync(true);
+            _taxManagerMock.Setup(x => x.CreateDailyTaxAsync(dailyTax, cancellationToken)).ReturnsAsync(true);
 
             // Act
             var result = await _taxController.CreateDailyTax(dailyTax, cancellationToken);
@@ -195,7 +195,7 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var dailyTax = new DailyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateDailyTax(dailyTax, cancellationToken)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.CreateDailyTaxAsync(dailyTax, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
             var result = await _taxController.CreateDailyTax(dailyTax, cancellationToken);

@@ -37,7 +37,7 @@ namespace Taxation.API.Controllers
                 }
 
                 var dateTimeOffset = DateTimeHelper.ConvertToDateTimeOffset(date);
-                var result = await _taxManager.GetTax(municipality, dateTimeOffset, cancellationToken);
+                var result = await _taxManager.GetTaxAsync(municipality, dateTimeOffset, cancellationToken);
                 if(result == null)
                 {
                     return NotFound();
@@ -62,7 +62,7 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateMunicipality(municipality,cancellationToken));
+                return Created("", await _taxManager.CreateMunicipalityAsync(municipality,cancellationToken));
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateYearlyTax(yearlyTax, cancellationToken));
+                return Created("", await _taxManager.CreateYearlyTaxAsync(yearlyTax, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -102,7 +102,7 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateMonthlyTax(monthlyTax, cancellationToken));
+                return Created("", await _taxManager.CreateMonthlyTaxAsync(monthlyTax, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -122,11 +122,75 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateDailyTax(daily, cancellationToken));
+                return Created("", await _taxManager.CreateDailyTaxAsync(daily, cancellationToken));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while creating daily tax");
+                return StatusCode(500);
+            }
+        }
+
+        /// <summary>
+        /// Updates yearly tax
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="yearlyTax"></param>
+        [HttpPut("yearly")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateYearlyTax([FromQuery]int Id, [FromBody] YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return Ok(await _taxManager.UpdateYearlyTaxAsync(Id, yearlyTax, cancellationToken));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating yearly tax");
+                return StatusCode(500);
+            }
+        }
+
+        /// <summary>
+        /// Updates monthly tax
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="monthlyTax"></param>
+        [HttpPut("monthly")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateMonthlyTax([FromQuery] int Id, [FromBody] MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
+        {
+            try
+            {   
+                return Ok(await _taxManager.UpdateMonthlyTaxAsync(Id, monthlyTax, cancellationToken));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating monthly tax");
+                return StatusCode(500);
+            }
+        }
+
+
+        /// <summary>
+        /// Updates daily tax
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="dailyTax"></param>
+        [HttpPut("daily")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateDailyTax([FromQuery] int Id, [FromBody] DailyTaxRequest dailyTax, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return Ok(await _taxManager.UpdateDailyTaxAsync(Id, dailyTax, cancellationToken));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating daily tax");
                 return StatusCode(500);
             }
         }
