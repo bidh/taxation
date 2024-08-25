@@ -16,9 +16,9 @@ namespace Taxation.API.Managers
             _memoryCache = memoryCache;
         }
 
-        public Task<bool> CreateDailyTaxAsync(DailyTaxRequest dailyTax, CancellationToken cancellationToken)
+        public async Task<bool> CreateDailyTaxAsync(DailyTaxRequest dailyTax, CancellationToken cancellationToken)
         {
-            return _taxService.CreateDailyTaxAsync(new DailyTax
+            return await _taxService.CreateDailyTaxAsync(new DailyTax
             {
                 MunicipalityId = dailyTax.MunicipalityId,
                 Tax = dailyTax.Tax,
@@ -26,9 +26,9 @@ namespace Taxation.API.Managers
             }, cancellationToken);
         }
 
-        public Task<bool> CreateMonthlyTaxAsync(MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
+        public async Task<bool> CreateMonthlyTaxAsync(MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
         {
-            return _taxService.CreateMonthlyTaxAsync(new MonthlyTax
+            return await _taxService.CreateMonthlyTaxAsync(new MonthlyTax
             {
                 MunicipalityId = monthlyTax.MunicipalityId,
                 Tax = monthlyTax.Tax,
@@ -37,17 +37,22 @@ namespace Taxation.API.Managers
             }, cancellationToken);
         }
 
-        public Task<bool> CreateMunicipalityAsync(MunicipalityRequest municipality, CancellationToken cancellationToken)
+        public async Task<bool> CreateMunicipalityAsync(MunicipalityRequest municipality, CancellationToken cancellationToken)
         {
-            return _taxService.CreateMunicipalityAsync(new Municipality
+            var existingMunicipality = await _taxService.GetMunicipalityAsync(municipality.Name, cancellationToken);
+            if(existingMunicipality != null)
+            {
+                return false;
+            }
+            return await _taxService.CreateMunicipalityAsync(new Municipality
             {
                 Name = municipality.Name
             }, cancellationToken);
         }
 
-        public Task<bool> CreateYearlyTaxAsync(YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
+        public async Task<bool> CreateYearlyTaxAsync(YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
         {
-            return _taxService.CreateYearlyTaxAsync(new Yearlytax
+            return await _taxService.CreateYearlyTaxAsync(new Yearlytax
             {
                 MunicipalityId = yearlyTax.MunicipalityId,
                 Tax = yearlyTax.Tax,
@@ -105,7 +110,7 @@ namespace Taxation.API.Managers
             });
         }
 
-        public async Task<bool?> UpdateDailyTaxAsync(int id, DailyTaxRequest dailyTax, CancellationToken cancellationToken)
+        public async Task<bool> UpdateDailyTaxAsync(int id, DailyTaxRequest dailyTax, CancellationToken cancellationToken)
         {
             return await _taxService.UpdateDailyTaxAsync(new DailyTax
             {
@@ -116,7 +121,7 @@ namespace Taxation.API.Managers
             }, cancellationToken);
         }
 
-        public async Task<bool?> UpdateMonthlyTaxAsync(int id, MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
+        public async Task<bool> UpdateMonthlyTaxAsync(int id, MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
         {
             return await _taxService.UpdateMonthlyTaxAsync(new MonthlyTax
             {
@@ -128,7 +133,7 @@ namespace Taxation.API.Managers
             }, cancellationToken);
         }
 
-        public async Task<bool?> UpdateYearlyTaxAsync(int id, YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
+        public async Task<bool> UpdateYearlyTaxAsync(int id, YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
         {
             return await _taxService.UpdateYearlyTaxAsync(new Yearlytax
             {

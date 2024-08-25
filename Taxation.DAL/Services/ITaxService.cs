@@ -15,8 +15,8 @@ namespace Taxation.DAL.Services
         public Task<DailyTax?> GetDailyTaxByIdAsync(int Id, CancellationToken cancellationToken);
         public Task<Yearlytax?> GetYearlytaxByIdAsync(int Id, CancellationToken cancellationToken);
         public Task<MonthlyTax?> GetMonthlyTaxByIdAsync(int Id, CancellationToken cancellationToken);
-        public Task<bool?> UpdateDailyTaxAsync(DailyTax dailyTax, CancellationToken cancellationToken);
-        public Task<bool?> UpdateMonthlyTaxAsync(MonthlyTax monthlyTax, CancellationToken cancellationToken);
-        public Task<bool?> UpdateYearlyTaxAsync(Yearlytax yearlyTax, CancellationToken cancellationToken);
+        public Task<bool> UpdateDailyTaxAsync(DailyTax dailyTax, CancellationToken cancellationToken);
+        public Task<bool> UpdateMonthlyTaxAsync(MonthlyTax monthlyTax, CancellationToken cancellationToken);
+        public Task<bool> UpdateYearlyTaxAsync(Yearlytax yearlyTax, CancellationToken cancellationToken);
     }
 }

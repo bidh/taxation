@@ -58,11 +58,16 @@ namespace Taxation.API.Controllers
         [HttpPost("municipality")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateYearlyTax([FromBody] MunicipalityRequest municipality, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateMunicipality([FromBody] MunicipalityRequest municipality, CancellationToken cancellationToken)
         {
             try
             {
-                return Created("", await _taxManager.CreateMunicipalityAsync(municipality,cancellationToken));
+                var result = await _taxManager.CreateMunicipalityAsync(municipality, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500, "Municipality already exists");
+                }
+                return Created("", result);
             }
             catch (Exception ex)
             {
@@ -82,7 +87,12 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateYearlyTaxAsync(yearlyTax, cancellationToken));
+                var result = await _taxManager.CreateYearlyTaxAsync(yearlyTax, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500);
+                }
+                return Created("", result);
             }
             catch (Exception ex)
             {
@@ -102,7 +112,12 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateMonthlyTaxAsync(monthlyTax, cancellationToken));
+                var result = await _taxManager.CreateMonthlyTaxAsync(monthlyTax, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500);
+                }
+                return Created("", result);
             }
             catch (Exception ex)
             {
@@ -122,7 +137,12 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Created("", await _taxManager.CreateDailyTaxAsync(daily, cancellationToken));
+                var result = await _taxManager.CreateDailyTaxAsync(daily, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500);
+                }
+                return Created("", result);
             }
             catch (Exception ex)
             {
@@ -143,7 +163,12 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Ok(await _taxManager.UpdateYearlyTaxAsync(Id, yearlyTax, cancellationToken));
+                var result = await _taxManager.UpdateYearlyTaxAsync(Id, yearlyTax, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500);
+                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -164,7 +189,12 @@ namespace Taxation.API.Controllers
         {
             try
             {   
-                return Ok(await _taxManager.UpdateMonthlyTaxAsync(Id, monthlyTax, cancellationToken));
+                var result = await _taxManager.UpdateMonthlyTaxAsync(Id, monthlyTax, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500);
+                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -186,7 +216,12 @@ namespace Taxation.API.Controllers
         {
             try
             {
-                return Ok(await _taxManager.UpdateDailyTaxAsync(Id, dailyTax, cancellationToken));
+                var result = await _taxManager.UpdateDailyTaxAsync(Id, dailyTax, cancellationToken);
+                if (!result)
+                {
+                    return StatusCode(500);
+                }
+                return Ok(result);
             }
             catch (Exception ex)
             {

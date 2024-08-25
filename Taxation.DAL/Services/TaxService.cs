@@ -94,7 +94,7 @@ namespace Taxation.DAL.Services
             return await _db.MonthlyTaxes.FirstOrDefaultAsync(x => x.MunicipalityId == municipality.Id && x.StartDate <= date && x.EndDate >= date, cancellationToken: cancellationToken);
         }
 
-        public async Task<bool?> UpdateDailyTaxAsync(DailyTax dailyTax, CancellationToken cancellationToken)
+        public async Task<bool> UpdateDailyTaxAsync(DailyTax dailyTax, CancellationToken cancellationToken)
         {
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -111,7 +111,7 @@ namespace Taxation.DAL.Services
             }
         }
 
-        public async Task<bool?> UpdateMonthlyTaxAsync(MonthlyTax monthlyTax, CancellationToken cancellationToken)
+        public async Task<bool> UpdateMonthlyTaxAsync(MonthlyTax monthlyTax, CancellationToken cancellationToken)
         {
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
@@ -128,7 +128,7 @@ namespace Taxation.DAL.Services
             }
         }
 
-        public async Task<bool?> UpdateYearlyTaxAsync(Yearlytax yearlyTax, CancellationToken cancellationToken)
+        public async Task<bool> UpdateYearlyTaxAsync(Yearlytax yearlyTax, CancellationToken cancellationToken)
         {            
             using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
