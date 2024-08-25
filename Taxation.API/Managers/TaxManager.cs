@@ -52,9 +52,47 @@ namespace Taxation.API.Managers
             }, cancellationToken);
         }
 
-        public async Task<float> GetTax(string municipality, DateTimeOffset date, CancellationToken cancellationToken)
+        public async Task<float?> GetTax(string name, DateTimeOffset date, CancellationToken cancellationToken)
         {
-            return await _taxService.GetTax(municipality, date, cancellationToken);
+            var municipality = await _taxService.GetMunicipalityAsync(name, cancellationToken);
+            
+            if (municipality == null)
+            {
+                return null;
+            }
+
+            float? tax = null;
+
+            var dailyTax = await _taxService.GetDailyTaxAsync(municipality, date, cancellationToken);
+
+            if(dailyTax != null)
+            {
+                tax = dailyTax.Tax;
+            }
+            else
+            {
+                var monthlyTax = await _taxService.GetMonthlyTaxAsync(municipality, date, cancellationToken);
+
+                if (monthlyTax != null)
+                {
+                    tax = monthlyTax.Tax;
+                }
+                else
+                {
+                    var yearlyTax = await _taxService.GetYearlytaxAsync(municipality, date, cancellationToken);
+
+                    if (yearlyTax != null)
+                    {
+                        tax = yearlyTax.Tax;
+                    }
+                }
+            }
+
+            if(tax == null)
+            {
+                return null;
+            }   
+            return tax;
         }
     }
 }

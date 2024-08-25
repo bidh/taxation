@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using Microsoft.EntityFrameworkCore;
 using Taxation.DAL.Context;
 using Taxation.DAL.Models;
 
@@ -55,7 +55,7 @@ namespace Taxation.DAL.Services
             {
                 await transaction.RollbackAsync(cancellationToken);
                 return false;
-            }            
+            }
         }
 
         public async Task<bool> CreateYearlyTax(Yearlytax yearlyTax, CancellationToken cancellationToken)
@@ -74,10 +74,24 @@ namespace Taxation.DAL.Services
                 return false;
             }
         }
-
-        public async Task<float> GetTax(string municipality, DateTimeOffset date, CancellationToken cancellationToken)
+        public async Task<Municipality?> GetMunicipalityAsync(string name, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _db.Municipalities.FirstOrDefaultAsync(x => x.Name.Equals(name), cancellationToken: cancellationToken);
+        }
+
+        public async Task<DailyTax?> GetDailyTaxAsync(Municipality municipality, DateTimeOffset date, CancellationToken cancellationToken)
+        {
+           return await _db.DailyTaxes.FirstOrDefaultAsync(x => x.MunicipalityId == municipality.Id && x.Date == date, cancellationToken: cancellationToken);
+        }
+
+        public async Task<Yearlytax?> GetYearlytaxAsync(Municipality municipality, DateTimeOffset date, CancellationToken cancellationToken)
+        {
+            return await _db.YearlyTaxes.FirstOrDefaultAsync(x => x.MunicipalityId == municipality.Id && x.StartDate <= date && x.EndDate >= date, cancellationToken: cancellationToken);
+        }
+
+        public async Task<MonthlyTax?> GetMonthlyTaxAsync(Municipality municipality, DateTimeOffset date, CancellationToken cancellationToken)
+        {
+            return await _db.MonthlyTaxes.FirstOrDefaultAsync(x => x.MunicipalityId == municipality.Id && x.StartDate <= date && x.EndDate >= date, cancellationToken: cancellationToken);
         }
     }
 }

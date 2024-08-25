@@ -20,12 +20,18 @@ namespace Taxation.API.Controllers
         /// <param name="date"></param>
         [HttpGet]
         [ProducesResponseType(typeof(decimal), 200)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Get([FromQuery]string municipality, [FromQuery]DateTimeOffset date, CancellationToken cancellationToken)
         {
             try
             {
-                return Ok(await _taxManager.GetTax(municipality,date, cancellationToken));
+                var result = await _taxManager.GetTax(municipality, date, cancellationToken);
+                if(result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
             }
             catch (Exception ex)
             {
