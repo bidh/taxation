@@ -4,6 +4,6 @@
     {
         public int MunicipalityId { get; set; }
         public float Tax { get; set; }
-        public DateTimeOffset Date { get; set; }
+        public string Date { get; set; }
     }
 }

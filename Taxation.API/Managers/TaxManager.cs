@@ -1,4 +1,5 @@
 ﻿using Taxation.API.Models;
+using Taxation.DAL.Helpers;
 using Taxation.DAL.Models;
 using Taxation.DAL.Services;
 
@@ -18,7 +19,7 @@ namespace Taxation.API.Managers
             {
                 MunicipalityId = dailyTax.MunicipalityId,
                 Tax = dailyTax.Tax,
-                Date = dailyTax.Date
+                Date = DateTimeHelper.ConvertToDateTimeOffset(dailyTax.Date)
             }, cancellationToken);
         }
 
@@ -28,8 +29,8 @@ namespace Taxation.API.Managers
             {
                 MunicipalityId = monthlyTax.MunicipalityId,
                 Tax = monthlyTax.Tax,
-                StartDate = monthlyTax.StartDate,
-                EndDate = monthlyTax.EndDate
+                StartDate = DateTimeHelper.ConvertToDateTimeOffset(monthlyTax.StartDate),
+                EndDate = DateTimeHelper.ConvertToDateTimeOffset(monthlyTax.EndDate)
             }, cancellationToken);
         }
 
@@ -47,8 +48,8 @@ namespace Taxation.API.Managers
             {
                 MunicipalityId = yearlyTax.MunicipalityId,
                 Tax = yearlyTax.Tax,
-                StartDate = yearlyTax.StartDate,
-                EndDate = yearlyTax.EndDate
+                StartDate = DateTimeHelper.ConvertToDateTimeOffset(yearlyTax.StartDate),
+                EndDate = DateTimeHelper.ConvertToDateTimeOffset(yearlyTax.EndDate)
             }, cancellationToken);
         }
 

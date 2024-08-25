@@ -4,6 +4,7 @@ using Moq;
 using Taxation.API.Controllers;
 using Taxation.API.Managers;
 using Taxation.API.Models;
+using Taxation.DAL.Helpers;
 
 namespace Taxation.UnitTest
 {
@@ -25,12 +26,13 @@ namespace Taxation.UnitTest
         {
             // Arrange
             string municipality = "Copenhagen";
-            DateTimeOffset date = DateTimeOffset.Now;
+            string dateString = "August 8, 2024";
+            DateTimeOffset date = DateTimeHelper.ConvertToDateTimeOffset(dateString);
             float expectedTax = 10.0f;
             _taxManagerMock.Setup(x => x.GetTax(municipality, date, cancellationToken)).ReturnsAsync(expectedTax);
 
             // Act
-            var result = await _taxController.Get(municipality, date, cancellationToken);
+            var result = await _taxController.Get(municipality, dateString, cancellationToken);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -43,11 +45,12 @@ namespace Taxation.UnitTest
         {
             // Arrange
             string municipality = "Copenhagen";
-            DateTimeOffset date = DateTimeOffset.Now;
+            string dateString = "August 8, 2024";
+            DateTimeOffset date = DateTimeHelper.ConvertToDateTimeOffset(dateString);
             _taxManagerMock.Setup(x => x.GetTax(municipality, date, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
-            var result = await _taxController.Get(municipality, date, cancellationToken);
+            var result = await _taxController.Get(municipality, dateString, cancellationToken);
 
             // Assert
             Assert.IsType<StatusCodeResult>(result);

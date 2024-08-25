@@ -49,14 +49,14 @@ namespace Taxation.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Date = new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)),
                             MunicipalityId = 1,
                             Tax = 0.1f
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTimeOffset(new DateTime(2024, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            Date = new DateTimeOffset(new DateTime(2024, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)),
                             MunicipalityId = 1,
                             Tax = 0.1f
                         });
@@ -92,9 +92,9 @@ namespace Taxation.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTimeOffset(new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            EndDate = new DateTimeOffset(new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 2, 0, 0, 0)),
                             MunicipalityId = 1,
-                            StartDate = new DateTimeOffset(new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 2, 0, 0, 0)),
                             Tax = 0.4f
                         });
                 });
@@ -153,9 +153,9 @@ namespace Taxation.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTimeOffset(new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            EndDate = new DateTimeOffset(new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)),
                             MunicipalityId = 1,
-                            StartDate = new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)),
                             Tax = 0.2f
                         });
                 });

@@ -101,19 +101,19 @@ namespace Taxation.DAL.Migrations
                 columns: new[] { "Id", "Date", "MunicipalityId", "Tax" },
                 values: new object[,]
                 {
-                    { 1, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, 0.1f },
-                    { 2, new DateTimeOffset(new DateTime(2024, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, 0.1f }
+                    { 1, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)), 1, 0.1f },
+                    { 2, new DateTimeOffset(new DateTime(2024, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)), 1, 0.1f }
                 });
 
             migrationBuilder.InsertData(
                 table: "MonthlyTax",
                 columns: new[] { "Id", "EndDate", "MunicipalityId", "StartDate", "Tax" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, new DateTimeOffset(new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 0.4f });
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 2, 0, 0, 0)), 1, new DateTimeOffset(new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 2, 0, 0, 0)), 0.4f });
 
             migrationBuilder.InsertData(
                 table: "Yearlytax",
                 columns: new[] { "Id", "EndDate", "MunicipalityId", "StartDate", "Tax" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 0.2f });
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)), 1, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 1, 0, 0, 0)), 0.2f });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailyTax_MunicipalityId",

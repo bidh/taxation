@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using Taxation.API.Managers;
 using Taxation.API.Models;
+using Taxation.DAL.Helpers;
 
 namespace Taxation.API.Controllers
 {
@@ -16,17 +18,28 @@ namespace Taxation.API.Controllers
         /// <summary>
         /// Retrieves the tax for a given municipality and date
         /// </summary>
-        /// <param name="municipality"></param>
-        /// <param name="date"></param>
+        /// <param name="municipality">Name of the municipality</param>
+        /// <param name="date">Date format: January 1, 2024</param>
         [HttpGet]
         [ProducesResponseType(typeof(decimal), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> Get([FromQuery]string municipality, [FromQuery]DateTimeOffset date, CancellationToken cancellationToken)
+        public async Task<IActionResult> Get([FromQuery]string municipality, [FromQuery]string date, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _taxManager.GetTax(municipality, date, cancellationToken);
+                if(string.IsNullOrEmpty(municipality) || string.IsNullOrEmpty(date))
+                {
+                    return BadRequest();
+                }
+
+                if (!DateTimeHelper.IsValidDate(date))
+                {
+                    return BadRequest();
+                }
+
+                var dateTimeOffset = DateTimeHelper.ConvertToDateTimeOffset(date);
+                var result = await _taxManager.GetTax(municipality, dateTimeOffset, cancellationToken);
                 if(result == null)
                 {
                     return NotFound();

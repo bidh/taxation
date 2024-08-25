@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Taxation.DAL.Helpers;
 
 namespace Taxation.DAL.Context
 {
@@ -45,8 +46,8 @@ namespace Taxation.DAL.Context
                                    Id = 1,
                                    MunicipalityId = 1,
                                    Tax = 0.2f,
-                                   StartDate = new DateTime(2024, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc),
-                                   EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc)
+                                   StartDate = DateTimeHelper.ConvertToDateTimeOffset("January 1, 2024"),
+                                   EndDate = DateTimeHelper.ConvertToDateTimeOffset("December 31, 2024")
                                });
         }
 
@@ -58,8 +59,8 @@ namespace Taxation.DAL.Context
                                     Id = 1,
                                     MunicipalityId = 1,
                                     Tax = 0.4f,
-                                    StartDate = new DateTime(2024, 05, 01, 0, 0, 0, 0, DateTimeKind.Utc),
-                                    EndDate = new DateTime(2024, 05, 31, 0, 0, 0, 0, DateTimeKind.Utc)
+                                    StartDate = DateTimeHelper.ConvertToDateTimeOffset("May 1, 2024"),
+                                    EndDate = DateTimeHelper.ConvertToDateTimeOffset("May 31, 2024")
                                 });
         }
 
@@ -71,14 +72,14 @@ namespace Taxation.DAL.Context
                                     Id = 1,
                                     MunicipalityId = 1,
                                     Tax = 0.1f,
-                                    Date = new DateTime(2024, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc)
+                                    Date = DateTimeHelper.ConvertToDateTimeOffset("January 1, 2024")
                                 },
                                 new Models.DailyTax
                                 {
                                     Id = 2,
                                     MunicipalityId = 1,
                                     Tax = 0.1f,
-                                    Date = new DateTime(2024, 12, 25, 0, 0, 0, 0, DateTimeKind.Utc)
+                                    Date = DateTimeHelper.ConvertToDateTimeOffset("December 25, 2024")
                                 });
         }
     }
