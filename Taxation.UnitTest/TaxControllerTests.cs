@@ -12,7 +12,7 @@ namespace Taxation.UnitTest
         private readonly Mock<ITaxManager> _taxManagerMock;
         private readonly Mock<ILogger<TaxController>> _loggerMock;
         private readonly TaxController _taxController;
-
+        readonly CancellationToken cancellationToken = CancellationToken.None;
         public TaxControllerTests()
         {
             _taxManagerMock = new Mock<ITaxManager>();
@@ -26,11 +26,11 @@ namespace Taxation.UnitTest
             // Arrange
             string municipality = "Copenhagen";
             DateTimeOffset date = DateTimeOffset.Now;
-            decimal expectedTax = 10.0m;
-            _taxManagerMock.Setup(x => x.GetTax(municipality, date)).ReturnsAsync(expectedTax);
+            float expectedTax = 10.0f;
+            _taxManagerMock.Setup(x => x.GetTax(municipality, date, cancellationToken)).ReturnsAsync(expectedTax);
 
             // Act
-            var result = await _taxController.Get(municipality, date);
+            var result = await _taxController.Get(municipality, date, cancellationToken);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -44,10 +44,10 @@ namespace Taxation.UnitTest
             // Arrange
             string municipality = "Copenhagen";
             DateTimeOffset date = DateTimeOffset.Now;
-            _taxManagerMock.Setup(x => x.GetTax(municipality, date)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.GetTax(municipality, date, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
-            var result = await _taxController.Get(municipality, date);
+            var result = await _taxController.Get(municipality, date, cancellationToken);
 
             // Assert
             Assert.IsType<StatusCodeResult>(result);
@@ -58,12 +58,12 @@ namespace Taxation.UnitTest
         [Fact]
         public async Task CreateYearlyTax_ReturnsCreatedResult()
         {
-            // Arrange
+            // Arrange            
             var yearlyTax = new YearlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateYearlyTax(yearlyTax)).ReturnsAsync(true);
+            _taxManagerMock.Setup(x => x.CreateYearlyTax(yearlyTax, cancellationToken)).ReturnsAsync(true);
 
             // Act
-            var result = await _taxController.CreateYearlyTax(yearlyTax);
+            var result = await _taxController.CreateYearlyTax(yearlyTax, cancellationToken);
 
             // Assert
             Assert.IsType<CreatedResult>(result);
@@ -76,10 +76,10 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var yearlyTax = new YearlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateYearlyTax(yearlyTax)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.CreateYearlyTax(yearlyTax, new CancellationToken())).ThrowsAsync(new Exception());
 
             // Act
-            var result = await _taxController.CreateYearlyTax(yearlyTax);
+            var result = await _taxController.CreateYearlyTax(yearlyTax, cancellationToken);
 
             // Assert
             Assert.IsType<StatusCodeResult>(result);
@@ -92,10 +92,10 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var monthlyTax = new MonthlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateMonthlyTax(monthlyTax)).ReturnsAsync(true);
+            _taxManagerMock.Setup(x => x.CreateMonthlyTax(monthlyTax, cancellationToken)).ReturnsAsync(true);
 
             // Act
-            var result = await _taxController.CreateMonthlyTax(monthlyTax);
+            var result = await _taxController.CreateMonthlyTax(monthlyTax, cancellationToken);
 
             // Assert
             Assert.IsType<CreatedResult>(result);
@@ -108,10 +108,10 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var monthlyTax = new MonthlyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateMonthlyTax(monthlyTax)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.CreateMonthlyTax(monthlyTax, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
-            var result = await _taxController.CreateMonthlyTax(monthlyTax);
+            var result = await _taxController.CreateMonthlyTax(monthlyTax, cancellationToken);
 
             // Assert
             Assert.IsType<StatusCodeResult>(result);
@@ -124,10 +124,10 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var dailyTax = new DailyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateDailyTax(dailyTax)).ReturnsAsync(true);
+            _taxManagerMock.Setup(x => x.CreateDailyTax(dailyTax, cancellationToken)).ReturnsAsync(true);
 
             // Act
-            var result = await _taxController.CreateDailyTax(dailyTax);
+            var result = await _taxController.CreateDailyTax(dailyTax, cancellationToken);
 
             // Assert
             Assert.IsType<CreatedResult>(result);
@@ -140,10 +140,10 @@ namespace Taxation.UnitTest
         {
             // Arrange
             var dailyTax = new DailyTaxRequest();
-            _taxManagerMock.Setup(x => x.CreateDailyTax(dailyTax)).ThrowsAsync(new Exception());
+            _taxManagerMock.Setup(x => x.CreateDailyTax(dailyTax, cancellationToken)).ThrowsAsync(new Exception());
 
             // Act
-            var result = await _taxController.CreateDailyTax(dailyTax);
+            var result = await _taxController.CreateDailyTax(dailyTax, cancellationToken);
 
             // Assert
             Assert.IsType<StatusCodeResult>(result);

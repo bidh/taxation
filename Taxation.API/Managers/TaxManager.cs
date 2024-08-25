@@ -12,29 +12,49 @@ namespace Taxation.API.Managers
             _taxService = taxService;
         }
 
-        public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax)
+        public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax, CancellationToken cancellationToken)
         {
             return _taxService.CreateDailyTax(new DailyTax
             {
                 MunicipalityId = dailyTax.MunicipalityId,
                 Tax = dailyTax.Tax,
                 Date = dailyTax.Date
-            });
+            }, cancellationToken);
         }
 
-        public Task<bool> CreateMonthlyTax(MonthlyTaxRequest monthlyTax)
+        public Task<bool> CreateMonthlyTax(MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return _taxService.CreateMonthlyTax(new MonthlyTax
+            {
+                MunicipalityId = monthlyTax.MunicipalityId,
+                Tax = monthlyTax.Tax,
+                StartDate = monthlyTax.StartDate,
+                EndDate = monthlyTax.EndDate
+            }, cancellationToken);
         }
 
-        public Task<bool> CreateYearlyTax(YearlyTaxRequest yearlyTax)
+        public Task<bool> CreateMunicipality(MunicipalityRequest municipality, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return _taxService.CreateMunicipality(new Municipality
+            {
+                Name = municipality.Name
+            }, cancellationToken);
         }
 
-        public async Task<decimal> GetTax(string municipality, DateTimeOffset date)
+        public Task<bool> CreateYearlyTax(YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
         {
-            return await _taxService.GetTax(municipality, date);
+            return _taxService.CreateYearlyTax(new Yearlytax
+            {
+                MunicipalityId = yearlyTax.MunicipalityId,
+                Tax = yearlyTax.Tax,
+                StartDate = yearlyTax.StartDate,
+                EndDate = yearlyTax.EndDate
+            }, cancellationToken);
+        }
+
+        public async Task<float> GetTax(string municipality, DateTimeOffset date, CancellationToken cancellationToken)
+        {
+            return await _taxService.GetTax(municipality, date, cancellationToken);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using Taxation.API.Managers;
 using Taxation.API.Models;
 
@@ -20,11 +21,11 @@ namespace Taxation.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(decimal), 200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> Get(string municipality, DateTimeOffset date)
+        public async Task<IActionResult> Get([FromQuery]string municipality, [FromQuery]DateTimeOffset date, CancellationToken cancellationToken)
         {
             try
             {
-                return Ok(await _taxManager.GetTax(municipality,date));
+                return Ok(await _taxManager.GetTax(municipality,date, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -34,17 +35,37 @@ namespace Taxation.API.Controllers
         }
 
         /// <summary>
+        /// Creates a municipality
+        /// </summary>
+        /// <param name="municipality"></param>
+        [HttpPost("municipality")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateYearlyTax([FromBody] MunicipalityRequest municipality, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return Created("", await _taxManager.CreateMunicipality(municipality,cancellationToken));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating yearly tax");
+                return StatusCode(500);
+            }
+        }
+
+        /// <summary>
         /// Creates a yearly tax
         /// </summary>
         /// <param name="yearlyTax"></param>
         [HttpPost("yearly")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateYearlyTax(YearlyTaxRequest yearlyTax)
+        public async Task<IActionResult> CreateYearlyTax([FromBody]YearlyTaxRequest yearlyTax, CancellationToken cancellationToken)
         {
             try
             {
-                return Created("", await _taxManager.CreateYearlyTax(yearlyTax));
+                return Created("", await _taxManager.CreateYearlyTax(yearlyTax, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -60,11 +81,11 @@ namespace Taxation.API.Controllers
         [HttpPost("monthly")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateMonthlyTax(MonthlyTaxRequest monthlyTax)
+        public async Task<IActionResult> CreateMonthlyTax([FromBody] MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken)
         {
             try
             {
-                return Created("", await _taxManager.CreateMonthlyTax(monthlyTax));
+                return Created("", await _taxManager.CreateMonthlyTax(monthlyTax, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -80,11 +101,11 @@ namespace Taxation.API.Controllers
         [HttpPost("daily")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateDailyTax(DailyTaxRequest daily)
+        public async Task<IActionResult> CreateDailyTax([FromBody] DailyTaxRequest daily, CancellationToken cancellationToken)
         {
             try
             {
-                return Created("", await _taxManager.CreateDailyTax(daily));
+                return Created("", await _taxManager.CreateDailyTax(daily, cancellationToken));
             }
             catch (Exception ex)
             {

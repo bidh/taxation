@@ -4,9 +4,10 @@ namespace Taxation.API.Managers
 {
     public interface ITaxManager
     {
-        public Task<decimal> GetTax(string municipality, DateTimeOffset date);
-        public Task<bool> CreateYearlyTax(YearlyTaxRequest yearlyTax);
-        public Task<bool> CreateMonthlyTax(MonthlyTaxRequest monthlyTax);
-        public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax);
+        public Task<float> GetTax(string municipality, DateTimeOffset date, CancellationToken cancellationToken);
+        public Task<bool> CreateYearlyTax(YearlyTaxRequest yearlyTax, CancellationToken cancellationToken);
+        public Task<bool> CreateMonthlyTax(MonthlyTaxRequest monthlyTax, CancellationToken cancellationToken);
+        public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax, CancellationToken cancellationToken);
+        public Task<bool> CreateMunicipality(MunicipalityRequest municipality, CancellationToken cancellationToken);
     }
 }
