@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Taxation.DAL.Migrations
 {
     /// <inheritdoc />
@@ -31,7 +33,7 @@ namespace Taxation.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MunicipalityId = table.Column<int>(type: "int", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false),
                     Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
@@ -52,7 +54,7 @@ namespace Taxation.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MunicipalityId = table.Column<int>(type: "int", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Tax = table.Column<float>(type: "real", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
@@ -76,7 +78,7 @@ namespace Taxation.DAL.Migrations
                     MunicipalityId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Tax = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,6 +90,30 @@ namespace Taxation.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Municipality",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Copenhagen" });
+
+            migrationBuilder.InsertData(
+                table: "DailyTax",
+                columns: new[] { "Id", "Date", "MunicipalityId", "Tax" },
+                values: new object[,]
+                {
+                    { 1, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, 0.1f },
+                    { 2, new DateTimeOffset(new DateTime(2024, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, 0.1f }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MonthlyTax",
+                columns: new[] { "Id", "EndDate", "MunicipalityId", "StartDate", "Tax" },
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2024, 5, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, new DateTimeOffset(new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 0.4f });
+
+            migrationBuilder.InsertData(
+                table: "Yearlytax",
+                columns: new[] { "Id", "EndDate", "MunicipalityId", "StartDate", "Tax" },
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 1, new DateTimeOffset(new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), 0.2f });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailyTax_MunicipalityId",

@@ -15,6 +15,6 @@ namespace Taxation.DAL.Models
         public int MunicipalityId { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public decimal Tax { get; set; }
+        public float Tax { get; set; }
     }
 }

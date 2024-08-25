@@ -13,7 +13,7 @@ namespace Taxation.DAL.Models
         [ForeignKey("MunicipalityId")]
         public Municipality Municipality { get; set; }
         public int MunicipalityId { get; set; }
-        public decimal Tax { get; set; }
+        public float Tax { get; set; }
         public DateTimeOffset Date { get; set; }
     }
 }
