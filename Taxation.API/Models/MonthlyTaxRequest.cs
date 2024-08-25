@@ -1,6 +1,6 @@
 ﻿namespace Taxation.API.Models
 {
-    public class MonthlyTax
+    public class MonthlyTaxRequest
     {
         public int Municipality { get; set; }
         public decimal Tax { get; set; }

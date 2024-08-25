@@ -12,7 +12,7 @@ WORKDIR /src
 COPY ["Taxation.API/Taxation.API.csproj", "Taxation.API/"]
 RUN dotnet restore "./Taxation.API/Taxation.API.csproj"
 COPY . .
-WORKDIR "/src/Taxation.API"
+WORKDIR "/Taxation.API"
 RUN dotnet build "./Taxation.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

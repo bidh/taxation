@@ -40,11 +40,11 @@ namespace Taxation.API.Controllers
         [HttpPost("yearly")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateYearlyTax(YearlyTax yearlyTax)
+        public async Task<IActionResult> CreateYearlyTax(YearlyTaxRequest yearlyTax)
         {
             try
             {
-                throw new NotImplementedException();
+                return Created("", await _taxManager.CreateYearlyTax(yearlyTax));
             }
             catch (Exception ex)
             {
@@ -60,11 +60,11 @@ namespace Taxation.API.Controllers
         [HttpPost("monthly")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateMonthlyTax(MonthlyTax monthlyTax)
+        public async Task<IActionResult> CreateMonthlyTax(MonthlyTaxRequest monthlyTax)
         {
             try
             {
-                throw new NotImplementedException();
+                return Created("", await _taxManager.CreateMonthlyTax(monthlyTax));
             }
             catch (Exception ex)
             {
@@ -80,11 +80,11 @@ namespace Taxation.API.Controllers
         [HttpPost("daily")]
         [ProducesResponseType(201)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateDailyTax(DailyTax daily)
+        public async Task<IActionResult> CreateDailyTax(DailyTaxRequest daily)
         {
             try
             {
-                throw new NotImplementedException();
+                return Created("", await _taxManager.CreateDailyTax(daily));
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using Taxation.DAL.Services;
+﻿using Taxation.API.Models;
+using Taxation.DAL.Services;
 
 namespace Taxation.API.Managers
 {
@@ -9,6 +10,22 @@ namespace Taxation.API.Managers
         {
             _taxService = taxService;
         }
+
+        public Task<bool> CreateDailyTax(DailyTaxRequest dailyTax)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CreateMonthlyTax(MonthlyTaxRequest monthlyTax)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CreateYearlyTax(YearlyTaxRequest yearlyTax)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<decimal> GetTax(string municipality, DateTimeOffset date)
         {
             return await _taxService.GetTax(municipality, date);

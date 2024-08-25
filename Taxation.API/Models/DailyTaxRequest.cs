@@ -1,6 +1,6 @@
 ﻿namespace Taxation.API.Models
 {
-    public class DailyTax
+    public class DailyTaxRequest
     {
         public string Municipality { get; set; }
         public decimal Tax { get; set; }
